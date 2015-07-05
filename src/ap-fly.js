@@ -1,4 +1,4 @@
-angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
+1angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
 
     var BaseModelPrototype = function() {
         this.baseUrl = "";
@@ -116,7 +116,6 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
         };
 
         this.instantiate_child = function(child){
-
             if (!child || (!child.prototypeConstructor && !child.isInstanceOf)){
                 console.error("You need to include the child service in your controller's dependencies.")
             }

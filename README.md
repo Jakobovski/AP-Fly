@@ -1,8 +1,7 @@
 # AP-Fly
 *(pronounced: API with 'fly' at the end)*
 
-AP-Fly is an AngularJS service that greatly simplifies handling RESTful resources. 
-**AP-Fly give you wings.**
+AP-Fly is an AngularJS service that greatly simplifies handling RESTful resources. It provides a customizable scaffolding for defining, accessing and modifying RESTful resources. As they say are the energy drink company, AP-Fly gives you wings.
 
 
 ## Documentation

@@ -13,7 +13,6 @@ Performs a HTTP GET operation to the URL associated with the given service.
 > `returns` A promise that resolves into an instantiated ap-fly object or array.
 
 >**Examples:**
-
 ```javascript
 // GET all users
 $scope.allUsers = UserService.GET();
@@ -45,7 +44,6 @@ Performs an HTTP POST to the URL associated with the given service.
 > `returns` A promise that resolves into an instantiated ap-fly object.
 
 >**Examples:**
-
 ```javascript
 // Create a new user
 $scope.newUser = {name:"John Doe", age:54};
@@ -67,7 +65,6 @@ Performs an HTTP PUT to the URL associated with the given service.
 > `returns` A promise that resolves into an instantiated ap-fly object.
 
 >**Examples:**
-
 ```javascript
 // Create a new user
 $scope.existingUser = {id: 23, name:"John Doe", age:54};
@@ -95,7 +92,6 @@ Performs an HTTP DELETE to the URL associated with the given service.
 > If no arguments are passed than a DELETE will be performed to self. if the object has an ID then it will be performed to that id, or to the resource url.
 
 >**Examples:**
-
 ```javascript
 // Performs DELETE to /api/users/33
 UserService.DELETE(33);
@@ -128,7 +124,6 @@ Performs an HTTP DELETE to the URL associated with the given service.
 > If no arguments are passed than a PUT or POST will be performed to self. if the object has an id then it will be performed to that id, or to the resource url.
 
 >**Examples:**
-
 ```javascript
 // Performs POST to /api/users
 UserService.save({name:'john'});
@@ -158,7 +153,6 @@ Performs an HTTP get to the URL associated with the given service. Overwrites cu
 > If no arguments are passed than a PUT or POST will be performed to self. if the object has an id then it will be performed to that id, or to the resource url.
 
 >**Examples:**
-
 ```javascript
 $scope.oneUser = UserService.GET(33); 
 // Refresh a user with the latest data from the server. This will overwrite any properties on the user object.
@@ -182,6 +176,7 @@ Creates a new apfly object of the given resource type or instantiates the passed
 >`object:` *object (optional)* 
 >> If a resource is passed it will instantiate that resource as an apfly object, otherwise returns a new apfly object of the given service
 
+>**Examples:**
 ```javascript
 var newUser = UserService.new();
 newUser.name = "John Doe";
@@ -196,14 +191,16 @@ newUser.save();
 ```
 
 
-## 2.2. Configuration Methods
+## 2.2. Global Configuration Methods
 ### ApflyProvider.setBaseUrl(string)
 ### ApflyProvider.setResponseExtractor(function(response, httpMethod)){})
 ### ApflyProvider.setErrorTransformer(function(response, httpMethod){})
 
 
+## 2.3 Resource level configuration methods
 ### setPostDeliver
 ### setPreDeliver
+### addChild()
 
 
 
