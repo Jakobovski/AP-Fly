@@ -1,3 +1,5 @@
+.DS_Store
+Gemfile.lock
 test-results.xml
 npm-debug.log
 bower_components
