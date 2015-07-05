@@ -1,7 +1,7 @@
 # AP-Fly
 *(pronounced: API with 'fly' at the end)*
 
-AP-Fly is an AngularJS service that simplifies modeling and communicating with RESTful APIs and resources.
+AP-Fly is an AngularJS service that greatly simplifies handling RESTful resources. AP-Fly give you wings.
 
 
 ## Installation
@@ -10,10 +10,10 @@ AP-Fly is an AngularJS service that simplifies modeling and communicating with R
 3. Add `apfly` as a dependency in your Angular application.
 
 
-## Major difference between AP-Fly and Restangular
+## Differences between AP-Fly and Restangular
 *AP-Fly was inspired by the awesome [Restangular](https://github.com/mgonto/restangular). AP-Fly has some significant differences which are intended to make working with a RESTful API even easier.*
 
-* You must define all your resources before using them. [This provides many of benefits]().
+* You must define all your resources before using them, [this provides many of benefits...]().
 * Child and related resource are auto-magically instantiated as AP-Fly objects allowing you to use all the AP-Fly methods on them.
 * Simpler and cleaner methods.
 * AP-fly is intended to allow simpler customization on a per resource basis. Its easy to define custom methods, transformers and resource relationships on a per resource basis.
@@ -25,7 +25,7 @@ AP-Fly is an AngularJS service that simplifies modeling and communicating with R
 
 ## Quick overview
 **CRUD**
-```
+```javascript
 // Get all the users (GET /api/users)
 $scope.users = UserService.GET();
 
@@ -62,7 +62,7 @@ newUser.plain();
 
 
 **Use promises or magic**
-```
+```javascript
 $scope.users = UserService.GET();
 
 // or
@@ -77,7 +77,7 @@ UserService.GET().then(function(users){
 
 
 **Relationships**
-```
+```javascript
 // Relationship are highly configurable, with sensible defaults. Here are some examples.
 $scope.user = UserService.GET(5);
 
