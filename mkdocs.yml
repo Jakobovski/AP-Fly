@@ -2,11 +2,10 @@ site_name: AP-Fly
 pages:
 - [index.md, Home]
 - [getting_started.md, Getting Started]
-
 - [api_reference.md, API Reference]
-- [examples.md, Examples]
-
+- [advanced_usage.md, Advanced Usage]
 - [faq.md, FAQ]
+- [demo.md, Demo]
 
 
 theme: readthedocs

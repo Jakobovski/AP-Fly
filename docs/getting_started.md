@@ -5,7 +5,7 @@
 
 
 # 1.1.  Configuration
-You need to set your base API URL, so that AP-Fly knows where your RESTful resources are located.
+You need to set your base API URL so that AP-Fly knows where your RESTful resources are located.
 ```javascript
 angular.module('my-app').config(function(ApflyProvider) {
     ApflyProvider.setBaseUrl("/api")
@@ -24,7 +24,7 @@ angular.module('my-app').factory('UserService', function(Apfly) {
 ```
 
 
-### GET
+### 1.2.1. GET
 ```javascript
 // Get all the users (GET /api/users)
 $scope.users = UserService.GET();
@@ -40,13 +40,12 @@ $scope.user.refresh();
 ```
 
 
-### POST and PUT
+### 1.2.2. POST and PUT
 ```javascript
-
 // Save JSON object
 var newUser = {name:"John Doe", age:54};
 // POST /api/users/
-UserService.save(newUser)
+UserService.save(newUser);
 
 // or you can explicitly specify that you want to POST.
 $scope.newUser = UserService.POST(newUser);
@@ -80,7 +79,7 @@ oldUser.save();
 ```
 
 
-### DELETE
+### 1.2.3. DELETE
 ```javascript
 // Delete a user
 // DELETE /api/users/5
@@ -92,19 +91,8 @@ oldUser.DELETE();
 ```
 
 
-### Other utility methods
+### 1.2.4. Use Promises or Magic
 ```javascript
-// Strips all AP-fly methods and properties and returns a plain JSON object.
-newUser.plain();
-
-// Refresh a user with the latest data from the server. This will overwrite any properties on the user object.
-$scope.user.refresh();
-```
-
-
-### Use Promises or Magic
-```javascript
-
 // Use Magic
 $scope.users = UserService.GET();
 
@@ -117,7 +105,19 @@ UserService.GET().then(function(users){
 ```
 
 
-### Relationships
+
+### 1.2.4. Some utility methods
+```javascript
+// Strips all AP-fly methods and properties and returns a plain JSON object.
+newUser.plain();
+
+// Refresh a user with the latest data from the server. This will overwrite any properties on the user object.
+$scope.user.refresh();
+```
+
+
+
+### 1.2.5. Relationships
 Relationship are highly configurable, with sensible defaults. Here are some examples to get you started, read the reference for more information.
 ```javascript
 $scope.user = UserService.GET(5);
