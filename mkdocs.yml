@@ -1,0 +1,13 @@
+site_name: AP-Fly
+pages:
+- [index.md, Home]
+- [getting_started.md, Getting Started]
+
+- [api_reference.md, API Reference]
+- [examples.md, Examples]
+
+- [faq.md, FAQ]
+
+
+theme: readthedocs
+repo_url: https://github.com/jakobovski/ap-fly/
