@@ -1,3 +1,7 @@
+- get latest bower/npm dependencies and updated bower.json and package.json
+- rename project, do search for ap-fly and apfly
+
+
 # AP-Fly
 *(pronounced: API with 'fly' at the end)*
 

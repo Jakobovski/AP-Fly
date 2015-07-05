@@ -1,0 +1,40 @@
+{
+  "name": "ap-fly",
+  "version": "1.00",
+  "authors": [
+    "Zohar Jackson <zohar.jackson+github@gmail.com>"
+  ],
+  "main": "./dist/ap-fly.js",
+  "description": "AP-Fly is an AngularJS service that greatly simplifies handling RESTful resources. AP-Fly give you wings.",
+  "keywords": [
+    "AngularJS",
+    "REST",
+    "angular",
+    "restful",
+    "models",
+    "angular models",
+    "api",
+    "angular resources",
+    "restangular"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "src",
+    "demo",
+    "bower.json",
+    "gruntfile.js",
+    "package.json",
+    "README.md",
+    "karma.conf.js"
+  ],
+  "dependencies": {
+    "angular": ">=1.3.0",
+    "angular-mocks": "~1.4.1",
+    "lodash": ">=1.3.0"
+  },
+  "homepage": "https://github.com/jakobovski/ap-fly"
+}
