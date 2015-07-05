@@ -94,7 +94,7 @@ $scope.newAddress.user.age =24;
 $scope.newAddress.user.save();
 ```
 
-**[And much much more...]()**
+**[And so much more...]()**
 
 
 
