@@ -1,11 +1,11 @@
 # AP-Fly
 *(pronounced: API with 'fly' at the end)*
 
-AP-Fly is an AngularJS service that greatly simplifies handling RESTful resources. It provides a customizable scaffolding for defining, accessing and modifying RESTful resources. As they say are the energy drink company: AP-Fly gives you wings.
+AP-Fly is an AngularJS service that greatly simplifies handling RESTful resources. It provides a customizable scaffolding for defining, accessing and modifying RESTful resources. As they say at the energy drink company: AP-Fly gives you wings.
 
 
 ## Documentation
-[Read the docs](http://ap-fly.readthedocs.org/en/latest/)
+[Read the docs](http://ap-fly.readthedocs.org/en/latest/) for detailed information on using AP-fly.
 
 ## Quick Overview
 **CRUD**
@@ -96,6 +96,12 @@ $scope.newAddress.user.save();
 
 **[And much much more...]()**
 
+
+
+## Installation
+1. Using bower:  `bower install ap-fly`
+2. Include `ap-fly.min.js` into your application's HTML.
+3. Add `apfly` as a dependency in your Angular application.
 
 
 ## Differences between AP-Fly and Restangular
