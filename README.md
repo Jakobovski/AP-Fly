@@ -1,3 +1,6 @@
+## TEMPORARY STAGING AREA FOR THIS REPO THIS REPO WILL BE DELETED AND REPLACED WITH CLEAN HISTORY WHEN READY.
+
+
 # AP-Fly
 *(pronounced: API with 'fly' at the end)*
 
@@ -107,7 +110,7 @@ $scope.newAddress.user.save();
 ## Differences between AP-Fly and Restangular
 *AP-Fly was inspired by the awesome [Restangular](https://github.com/mgonto/restangular). AP-Fly has some significant differences which are intended to make working with a RESTful API even easier.*
 
-* You must define all your resources before using them, [this provides many of benefits...]().
+* You must define all your resources before using them, [this provides many benefits]().
 * Child and related resource are auto-magically instantiated as AP-Fly objects allowing you to use all the AP-Fly methods on them.
 * Simpler and cleaner methods.
 * AP-fly is intended to allow simpler customization on a per resource basis. Its easy to define custom methods, transformers and resource relationships on a per resource basis.

@@ -22,7 +22,7 @@
         this._assign = function(destination, source){
             // Remove all properties from this object
             _.forOwn(destination, function(value, key) {
-                delete destination[key]
+                delete destination[key];
             });
            
            return _.assign(destination, source);
@@ -305,12 +305,23 @@
             var item = {
                 id: id
             };
-            item = this.preDeliver(item);
-            return this.$http_get(item.id).then(function(response) {
-                return self.restangularize(self.postDeliver(self.responseExtractor(response)));
+           
+
+            var item = this.preDeliver(item);
+            var obj_to_return = {}
+
+            obj_to_return  = this.$http_get(item.id).then(function(response) {
+                // Maybe make a function that authomatis these lines?
+
+                  var new_item =  self.restangularize(self.postDeliver(self.responseExtractor(response)));
+                  self._assign(obj_to_return.$object, new_item)
+                  return obj_to_return.$object;
             },function(response){
-                return self.errorTransformer(response, 'GET')
+                 return self.errorTransformer(response, 'GET')
             });
+
+            obj_to_return.$object = self.new();
+            return obj_to_return
         };
 
 
