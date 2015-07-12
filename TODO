@@ -1,10 +1,9 @@
 TODO
-- do I want to update the model on save/post/delte or return updated in .$object
+- Document what gets updated 
     on post and put, dont update
     on save update
     on delete update if nothing is passed, otherwise dont update
 
--add deleteId to api_refrences
 - validation
 - get latest bower/npm dependencies and updated bower.json and package.json
 - rename project, do search for ap-fly and apfly
