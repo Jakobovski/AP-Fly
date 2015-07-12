@@ -5,11 +5,10 @@ TODO
     on delete update if nothing is passed, otherwise dont update
 
 - validation
-- get latest bower/npm dependencies and updated bower.json and package.json
 - rename project, do search for ap-fly and apfly
 - search project for todo
--create why need to create service page
--get subsections to be indeted on menu
-- adjust code to be in line with docs
+- create why need to create service page
+- get subsections to be indeted on menu
 - add recommendations on project structure
--check consistancy between docs and readme
+- check consistancy between docs and readme
+- create tests
