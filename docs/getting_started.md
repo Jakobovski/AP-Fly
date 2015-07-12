@@ -27,13 +27,13 @@ angular.module('my-app').factory('UserService', function(Apfly) {
 ### 1.2.1. GET
 ```javascript
 // Get all the users (GET /api/users)
-$scope.users = UserService.GET();
+UserService.getList();
 
 // Get all users named John (GET /api/users?name=john)
-$scope.user = UserService.GET({name:"John"});
+UserService.getList({name:"John"});
 
-// Get a single user id=4  (GET /api/users/5)
-UserService.GET(5);
+// Get a single user id=5  (GET /api/users/5)
+$scope.user = UserService.getId(5).$object;
 
 // Refresh a user with the latest data from the server. This will overwrite any properties on the user object.
 $scope.user.refresh();
@@ -43,12 +43,12 @@ $scope.user.refresh();
 ### 1.2.2. POST and PUT
 ```javascript
 // Save JSON object
-var newUser = {name:"John Doe", age:54};
+$scope.newUser = {name:"John Doe", age:54};
 // POST /api/users/
 UserService.save(newUser);
 
 // or you can explicitly specify that you want to POST.
-$scope.newUser = UserService.POST(newUser);
+UserService.post(newUser);
 
 // You can also do it like this:
 // Instantiate a blank user resource
@@ -69,7 +69,7 @@ newUser.save();
 // Or like this.
 var oldUser = {id: 31, name:'John Old', age:25};
 // PUT /api/users/123
-UserService.PUT(newUser);
+UserService.put(newUser);
 
 
 // Or like this
@@ -83,21 +83,21 @@ oldUser.save();
 ```javascript
 // Delete a user
 // DELETE /api/users/5
-UserService.DELETE(5);
+UserService.delete(5);
 // or
-UserService.DELETE(newUser);
+UserService.delete(newUser);
 // or
-oldUser.DELETE();
+oldUser.delete();
 ```
 
 
 ### 1.2.4. Use Promises or Magic
 ```javascript
 // Use Magic
-$scope.users = UserService.GET();
+$scope.users = UserService.getList().$object;
 
 // Or use Promises
-UserService.GET().then(function(users){
+UserService.getList().then(function(users){
     $scope.users = users;
 }, function(response){
     alert("Oops error from server");
@@ -120,10 +120,12 @@ $scope.user.refresh();
 ### 1.2.5. Relationships
 Relationship are highly configurable, with sensible defaults. Here are some examples to get you started, read the reference for more information.
 ```javascript
-$scope.user = UserService.GET(5);
+// Relationship are highly configurable, with sensible defaults.
+// Here are some examples.
+$scope.user = UserService.getId(5).$object;
 
 // Get all the user's addresses. (GET /api/users/5/addresses)
-$scope.user.child('addresses').GET();
+$scope.user.child('addresses').getList();
 
 
 // Edit the zipcode of the address.
@@ -132,24 +134,21 @@ $scope.user.addresses[0].zipcode = 10001;
 // Now save the changes (PUT /api/users/5/addresses/1)
 $scope.user.addresses[0].save();
 
-
 // Create a new address.
 $scope.newAddress = {street: "123 fake st.", zipcode: 10001, country: "usa"};
-$scope.user.child('addresses').POST($scope.newAddress);
+$scope.user.child('addresses').post($scope.newAddress);
 
 // Or depending on your routes (POST /api/addresses)
-$scope.newAddress.userId = 5;
-$scope.address = AddressService.POST(newAddress);
+newAddress.userId = 5;
+$scope.address = AddressService.post(newAddress).$object
 
-var user = $scope.newAddress.user;
+console.log($scope.newAddress.user)
 // {name:"John Doe", age:54};
 
 // Now lets change his age
-user.age = 24;
-// PUT /api/users/5
-user.save();
-
-
+$scope.newAddress.user.age =24;
+$scope.newAddress.user.save();
 ```
 
 ** [And much much more...]()**
+

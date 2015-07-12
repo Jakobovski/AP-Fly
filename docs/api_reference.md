@@ -15,21 +15,21 @@ Performs a HTTP GET operation to the URL associated with the given service.
 >**Examples:**
 ```javascript
 // GET all users
-$scope.allUsers = UserService.GET();
+$scope.allUsers = UserService.getList().$object;
 
 // GET user with id == 33
-$scope.oneUser = UserService.GET(33); 
+$scope.oneUser = UserService.getId(33).$object; 
 
 // GET all users aged 99
-$scope.oldUsers = UserService.GET({age:99}});  
+$scope.oldUsers = UserService.getList{age:99}}).$object;  
 
 // GET all users aged 99 or 98
 // GET /api/users?age=99&age=98
-$scope.oldUsers = UserService.GET({age:[99,98]});  
+$scope.oldUsers = UserService.getList({age:[99,98]}).$object;  
 
 
 // Use promises
-UserService.GET(33).then(function(user){
+UserService.getId(33).then(function(user){
     $scope.oneUser = user;
 }, function(error){
     alert('Something went wrong');
@@ -47,10 +47,10 @@ Performs an HTTP POST to the URL associated with the given service.
 ```javascript
 // Create a new user
 $scope.newUser = {name:"John Doe", age:54};
-UserService.POST($scope.newUser);
+UserService.post($scope.newUser);
 
 // Use promises
-UserService.POST($scope.newUser).then(function(user){
+UserService.post($scope.newUser).then(function(user){
     // Do something
 }, function(error){
     alert('Something went wrong');
@@ -68,10 +68,10 @@ Performs an HTTP PUT to the URL associated with the given service.
 ```javascript
 // Create a new user
 $scope.existingUser = {id: 23, name:"John Doe", age:54};
-UserService.PUT($scope.existingUser);
+UserService.put($scope.existingUser);
 
 // Use promises
-UserService.PUT($scope.existingUser).then(function(user){
+UserService.put($scope.existingUser).then(function(user){
     // Do something
 }, function(error){
     alert('Something went wrong');
@@ -94,18 +94,18 @@ Performs an HTTP DELETE to the URL associated with the given service.
 >**Examples:**
 ```javascript
 // Performs DELETE to /api/users/33
-UserService.DELETE(33);
+UserService.delete(33);
 
 // Performs DELETE to /api/users/33
-UserService.DELETE({id:33, name:'john'});
+UserService.delete({id:33, name:'john'});
 
 // GET user with id == 33
-$scope.oneUser = UserService.GET(33); 
+$scope.oneUser = UserService.getId(33).$object; 
 // Performs DELETE to /api/users/33
-$scope.oneUser.DELETE();
+$scope.oneUser.delete();
 
 // Use promises
-UserService.DELETE(33).then(function(response){
+UserService.delete(33).then(function(response){
     // Do something
 }, function(error){
     alert('Something went wrong');
@@ -132,7 +132,7 @@ UserService.save({name:'john'});
 UserService.save({id:33, name:'john'});
 
 // GET user with id == 33
-$scope.oneUser = UserService.GET(33); 
+$scope.oneUser = UserService.getId(33).$object; 
 // Performs PUT to /api/users/33
 $scope.oneUser.save();
 
@@ -154,7 +154,7 @@ Performs an HTTP get to the URL associated with the given service. Overwrites cu
 
 >**Examples:**
 ```javascript
-$scope.oneUser = UserService.GET(33); 
+$scope.oneUser = UserService.getId(33).$object; 
 // Refresh a user with the latest data from the server. This will overwrite any properties on the user object.
 $scope.oneUser.refresh();
 

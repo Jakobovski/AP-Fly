@@ -11,33 +11,48 @@ AP-Fly is an AngularJS service that greatly simplifies handling RESTful resource
 [Read the docs](http://ap-fly.readthedocs.org/en/latest/) for detailed information on using AP-fly.
 
 ## Quick Overview
+**Use promises or magic**
+```javascript
+
+// Use Magic
+$scope.users = UserService.getList().$object;
+
+// Or use Promises
+UserService.getList().then(function(users){
+    $scope.users = users;
+}, function(response){
+    alert("Oops error from server");
+});
+```
+
+
 **CRUD**
 ```javascript
 // Get all the users (GET /api/users)
-$scope.users = UserService.GET();
+$scope.users = UserService.getList().$object;
 
 // Get all users named John (GET /api/users?name=john)
-$scope.user = UserService.GET({name:"John"});
+$scope.user = UserService.getList({name:"John"}).$object;
 
 // Get a single user id=4  (GET /api/users/5)
-UserService.GET(5);
+$scope.user = UserService.getId(5).$object;
 
 // Save a new user
 var newUser = {name:"John Doe", age:54};
-$scope.newUser = UserService.POST(newUser);
+$scope.newUser = UserService.post(newUser).$object;
 
 // Delete a user
-UserService.DELETE(5);
+UserService.delete(5);
 // or
-UserService.DELETE(newUser);
+UserService.delete(newUser);
 // or
-newUser.DELETE();
+newUser.delete();
 
 // Update a user
 newUser.age = 23;
 newUser.save();
 // or
-UserService.PUT(newUser);
+UserService.put(newUser);
 
 // Reloads the object from the API
 newUser.refresh();
@@ -47,31 +62,14 @@ newUser.plain();
 ```
 
 
-
-**Use promises or magic**
-```javascript
-
-// Use Magic
-$scope.users = UserService.GET();
-
-// Or use Promises
-UserService.GET().then(function(users){
-    $scope.users = users;
-}, function(response){
-    alert("Oops error from server");
-});
-```
-
-
-
 **Relationships**
 ```javascript
 // Relationship are highly configurable, with sensible defaults.
 // Here are some examples.
-$scope.user = UserService.GET(5);
+$scope.user = UserService.getId(5).$object;
 
 // Get all the user's addresses. (GET /api/users/5/addresses)
-$scope.user.child('addresses').GET();
+$scope.user.child('addresses').getList();
 
 
 // Edit the zipcode of the address.
@@ -83,11 +81,11 @@ $scope.user.addresses[0].save();
 
 // Create a new address.
 $scope.newAddress = {street: "123 fake st.", zipcode: 10001, country: "usa"};
-$scope.user.child('addresses').POST($scope.newAddress);
+$scope.user.child('addresses').post($scope.newAddress);
 
 // Or depending on your routes (POST /api/addresses)
 newAddress.userId = 5;
-$scope.address = AddressService.POST(newAddress)
+$scope.address = AddressService.post(newAddress).$object
 
 console.log($scope.newAddress.user)
 // {name:"John Doe", age:54};

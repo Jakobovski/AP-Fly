@@ -248,9 +248,7 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                // Optionally return with metadata
                this.getList = function(params) {
                    var self = this;
-                   var objToReturn = {};
-
-                   objToReturn = this.$http_getList(params).then(function(response) {
+                   var objToReturn = this.$http_getList(params).then(function(response) {
                        data = self.responseExtractor(response)
 
                        // Restangularize all the items
@@ -296,9 +294,7 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                this.post = function(item) {
                    var self = this;
                    item = this.preDeliver(item);
-                   var objToReturn = {}
-
-                   objToReturn = this.$http_post(item).then(function(response) {
+                   var objToReturn = this.$http_post(item).then(function(response) {
                        return self._returnHelper(response, objToReturn)
                    }, function(response) {
                        return self.errorTransformer(response, 'POST')
@@ -311,8 +307,7 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                this.put = function(item) {
                    var self = this;
                    item = this.preDeliver(item);
-                   var objToReturn = {}
-                   objToReturn = this.$http_put(item).then(function(response) {
+                   var objToReturn = this.$http_put(item).then(function(response) {
                        return self._returnHelper(response, objToReturn)
                    }, function(response) {
                        return self.errorTransformer(response, 'PUT')
@@ -321,18 +316,10 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                    return objToReturn
                };
 
-               // todo remove this
-               this.getId = function(id) {
-                   return this.get(id);
-               };
 
-               this.get = function(id) {
+               this.getId = function(id) {
                    var self = this;
-                   var item = this.preDeliver({
-                       id: id
-                   });
-                   var objToReturn = {}
-                   objToReturn = this.$http_get(item.id).then(function(response) {
+                   var objToReturn = this.$http_get(id).then(function(response) {
                        return self._returnHelper(response, objToReturn)
                    }, function(response) {
                        return self.errorTransformer(response, 'GET')
@@ -353,9 +340,11 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                    }
                };
 
-               this.save = function() {
+               // This can either save itself, or an object passed
+               this.save = function(objToSave) {
                    var self = this;
-                   var item = this.preDeliver(this);
+                   var item = objToSave ? this.preDeliver(objToSave) : this.preDeliver(this);
+                   var objToReturn = {};
 
                    if (item.hasOwnProperty('id') && item.id) {
                        objToReturn = this.$http_put(item).then(function(response) {
@@ -363,25 +352,24 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                        }, function(response) {
                            return self.errorTransformer(response, 'PUT')
                        });
-
-                       objToReturn.$object = self.new();
-                       return objToReturn
-                   } else {
+                    } else {
                        objToReturn = this.$http_post(item).then(function(response) {
                            return self._returnHelper(response, objToReturn)
                        }, function(response) {
                            return self.errorTransformer(response, 'POST')
-                       });
-                       objToReturn.$object = self.new();
-                       return objToReturn
+                       });                      
                    }
+
+                   objToReturn.$object = objToSave ? objToSave : this;
+                   return objToReturn
                };
 
                // Accepts an ID, a object with an id, or nothing.
                this.delete = function(itemOrID) {
                    var self = this;
-                   idToDelete = this.id;
 
+                   // Figure out what to id to delete
+                   var idToDelete = this.id;
                    if (itemOrID) {
                        if (itemOrID.hasOwnProperty('id')) {
                            idToDelete = itemOrID.id;
@@ -390,12 +378,26 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                            idToDelete = itemOrID;
                        }
                    }
-                   return this.$http_delete(idToDelete).then(function(response) {
-                       return self.restangularize(self.postDeliver(self.responseExtractor(response)));
+
+                   objToReturn =  this.$http_delete(idToDelete).then(function(response) {
+                        return self._returnHelper(response, objToReturn)
                    }, function(response) {
                        return self.errorTransformer(response, 'DELETE')
                    });
+
+                   // Figure out what to assign to $object
+                   objToReturn.$object = this;
+                   if (itemOrID) {
+                       if (itemOrID.hasOwnProperty('id')) {
+                           objToReturn.$object = itemOrID;
+                       } else {
+                           idToDelete = this.new();
+                       }
+                   }
+
+                   return objToReturn
                };
+
 
                this.new = function(item) {
                    if (!item) {
