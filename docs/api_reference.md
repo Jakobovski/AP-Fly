@@ -213,7 +213,7 @@ newUser.save();
 ---------------------------------------
 
 
-## 2.2. Global Configuration Methods
+## 2.2. Configuration: Global
 ---------------------------------------
 ### Apfly.setBaseUrl(string)
 Accepts a string to use as the base URL of all requests.
@@ -239,7 +239,7 @@ This is an optional configuration option. This allows you to transform every res
     This function will place the metadata and message values onto the data. 
     This will work for arrays and individual resources.
 */
-Apfly.setResponseExtractor(function(response, method) {
+Apfly.setResponseExtractor(function(response, httpMethod) {
     if (response.data){
         var data = response.data.data;
         data._metadata = response.data.metadata;
@@ -263,28 +263,79 @@ This is an optional configuration option. This allows you to transform every res
 
 **Examples:**
 ```javascript
-Apfly.setErrorTransformer(function(response, method) {
-    if (response.data){
-        var data = response.data.data;
-        data._error = "Error:" + response.data.messages;
-        return data;
+/*
+    This will return a user friendly message that can be displayed.
+*/
+Apfly.setErrorTransformer(function(response, httpMethod){
+    var error = {};
+    error.source = httpMethod + " " + this.resourceUrl();
+    error.errorText = response.data.message;
+
+    var method_friendly = "getting";
+    if (httpMethod === 'PUT' || httpMethod === 'POST'){
+        method_friendly = 'saving';
     }
+    else if (httpMethod === 'DELETE'){
+        method_friendly = 'deleting'
+    }
+    error.userText = "Error " + method_friendly + " " + this.resource + ".";
+    response._error = error;
+    return $q.reject(response);
 });
 ```
 
 ---------------------------------------
-## 2.3 Resource Level Configuration Methods
+## 2.3 Configuration: Resource Level
 ---------------------------------------
-### setPostDeliver(function(object))
+### createService(options)
+// The service is an object or array with all the restangular properties
+// Parameters: 
+//     - resource: ''  (is both resource name and path) (required)
+//     - customPrototypeConstructor: function(resource){}
+//     - namesOnParentObject: []
+//     - isInstanceOf: Object
 
+
+### setPostDeliver(function(object, httpMethod))
+This is an optional configuration option. The function passed will be called after every call to the API and passed the response from the API. This is a way to transform resources that are returned from the API. The function must return the transformed object.
+
+**Examples:**
+```javascript
+angular.module('my-app').factory('UserService', function(Apfly) {
+    UserService = Apfly.createService({resource: 'users'})
+
+    UserService.setPostDeliver(function(resource, httpMethod) {
+        resource.fullName = resource.firstName + " " + resource.lastName;
+        return resource;
+    });
+
+    return UserService;
+});
+```
 
 ---------------------------------------
-### setPreDeliver(function(object))
+### setPreDeliver(function(object, httpMethod))
+This is an optional configuration option. The function passed will be called after before each call to the API and passed the value of the resource being sent to the API. This is a way to transform resources before the are `POST` or `PUT`  to the API. The function must return the transformed object.
 
+**Examples:**
+```javascript
+angular.module('my-app').factory('UserService', function(Apfly) {
+    UserService = Apfly.createService({resource: 'users'})
 
+    UserService.setPreDeliver(function(resource, httpMethod) {
+        resource.fullName = resource.firstName + " " + resource.lastName;
+        return resource;
+    });
+
+    return UserService;
+});
+```
 ---------------------------------------
+
+## 2.4 Relationship Methods
 ### addChild()
 
+### child()
 
 ---------------------------------------
 

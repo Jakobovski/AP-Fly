@@ -1,11 +1,19 @@
 TODO
 
-- validation
+- addChild
+-child
+-createService
 
-- choose name
-- check consistancy between docs and readme
-- create tests
-- search for JSON
+- validation
 - advanced usage
 - configuration methods
-pass method to responsExtractor
+- pass method to responsExtractor
+
+-rename pre and post deliver? copy restangualr naming
+- create tests
+- search for JSON
+
+
+- choose name
+- demo
+- check consistancy between docs and readme
