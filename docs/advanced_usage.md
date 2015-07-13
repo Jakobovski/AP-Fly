@@ -1,10 +1,7 @@
-# Advanced Usage
-
+# 3.0 Advanced Usage
 
 ## Creating custom methods for resources
-    .fullName()
+    
     
 ## Defining relationships
-
-
 

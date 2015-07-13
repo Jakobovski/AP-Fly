@@ -332,27 +332,17 @@ angular.module('my-app').factory('UserService', function(Apfly) {
 ```
 ---------------------------------------
 
+## setValidator(function(resource))
+This is an optional configuration option. Allows one to define what values are valid for the resource and what to do when the values are invalid.
+
+
+
 ## 2.4 Relationship Methods
 ### addChild()
 
 ### child()
 
 ---------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

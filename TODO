@@ -1,8 +1,9 @@
 TODO
 
 - addChild
--child
--createService
+- child
+- createService
+- figure out how i want to deal with relationships(update getting started and api_reference)
 
 - validation
 - advanced usage

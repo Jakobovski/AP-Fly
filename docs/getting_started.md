@@ -6,7 +6,7 @@
 
 # 1.1.  Setup
 ### 1.1.1. Configuration
-You need to set your base API URL so that Apfly knows where your RESTful resources are located. [See more configuration options](api_reference.md).
+You need to set your base API URL so that Apfly knows where your RESTful resources are located.
 ```javascript
 // Example: Configuring your API URL.
 angular.module('my-app').run(function(Apfly) {
@@ -30,7 +30,7 @@ angular.module('my-app').factory('UserService', function(Apfly) {
 # 1.2.  Basic Usage
 
 ### 1.2.1. Use Promises or Magic
-On any asynchronous method you can use promises or Magic.
+On any asynchronous method you can use Promises or Magic.
 ```javascript
 // Use Promises
 UserService.getList().then(function(users){
@@ -54,25 +54,26 @@ UserService.getList({name:"John"});
 // Get a single user id=5  (GET /api/users/5)
 $scope.user = UserService.getId(5).$object;
 
-// Refresh a user with the latest data from the server. This will overwrite any properties on the user object.
+// Refresh a user with the latest data from the server.
+// This will overwrite any properties on the user object.
 $scope.user.refresh();
 ```
 
 
 ### 1.2.3. POST and PUT
 ```javascript
-// Save object
+// Saving objects
 $scope.newUser = {name:"John Doe", age:54};
-// POST /api/users/
 // This will automatically update the newUser object when a response is received from the API.
+// POST /api/users/
 UserService.save($scope.newUser);
 
-// or you can explicitly specify that you want to POST.
+// or you can explicitly specify that you want to POST
 // and assign the result manually
 $scope.newUser = UserService.post($scope.newUser).$object;
 
-// You can also do it like this:
-// Instantiate a blank user resource
+// You can also do it like this.
+// Instantiate a blank user resource.
 var newUser = UserService.new();
 newUser.name = "John Doe";
 newUser.age = 54;
@@ -82,24 +83,25 @@ newUser.save();
 
 // Using .put()
 
-// Once the user has been saved on server, you can update the object and simply call .save() 
+// Once the user has an id, you can update the object and simply call .save() 
 // PUT /api/users/31  (where newUser.id == 31)
 newUser.age = 23;
 newUser.save();
 
 // Or like this.
-var oldUser = {id: 31, name:'John Old', age:25};
 // PUT /api/users/123
 newUser = UserService.put(newUser).$object;
 
 
 // Or like this
-var oldUser = UserService.new(oldUser);
+var oldUser = {id: 31, name:'John Old', age:25};
+oldUser = UserService.new(oldUser);
 // PUT /api/users/31
 oldUser.save();
 
 // More information:
-// .put() and .post() return a new object, .save() updates either the object passed(if present), or else the object its being called on.
+// .put() and .post() return a new object that needs to be assigned to something. 
+// save() automatically updates the object passed, or the object its being called on with the response from the API.
 ```
 
 
@@ -120,7 +122,7 @@ oldUser.delete();
 // Strips all AP-Fly methods and properties and returns a plain JS object.
 newUser.plain();
 
-// Refresh a resource with the latest data from the server. This will overwrite any properties on the object.
+// Refresh a resource with the latest data from the server. This will overwrite any properties on the resource.
 $scope.user.refresh();
 ```
 
