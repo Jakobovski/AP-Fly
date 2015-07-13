@@ -1,14 +1,11 @@
 TODO
-- Document what gets updated 
-    on post and put, dont update
-    on save update
-    on delete update if nothing is passed, otherwise dont update
 
 - validation
-- rename project, do search for ap-fly and apfly
-- search project for todo
-- create why need to create service page
-- get subsections to be indeted on menu
-- add recommendations on project structure
+
+- choose name
 - check consistancy between docs and readme
 - create tests
+- search for JSON
+- advanced usage
+- configuration methods
+pass method to responsExtractor

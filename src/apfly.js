@@ -5,7 +5,7 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
             return $q.reject(response);
         };
         this.responseExtractor = function(response) {
-            return response;
+            return response.data;
         };
         this._children = {};
 
@@ -27,15 +27,22 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
             _.forOwn(destination, function(value, key) {
                 delete destination[key];
             });
-
             return _.assign(destination, source);
-        }
+        };
 
         this._returnHelper = function(response, objToReturn) {
             var new_item = this.restangularize(this.postDeliver(this.responseExtractor(response)));
-            this._assign(objToReturn.$object, new_item)
+            this._assign(objToReturn.$object, new_item);
             return objToReturn.$object;
         };
+
+        this._checkHasOwnId = function(resource) {
+            if (resource.hasOwnProperty('id') && resource.id) {
+                return true;
+            }
+            return false;
+        };
+
 
         this.resourceUrl = function() {
             if (this.__proto__ && this.__proto__.resourceUrl) {
@@ -47,7 +54,7 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                     return this.resourceUrl.call(this.__proto__);
                 }
             } else {
-                return this.baseUrl
+                return this.baseUrl;
             }
         };
 
@@ -55,7 +62,6 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
         this.resourceBase = function() {
             return this.__proto__.resourceUrl();
         };
-
 
         // Functions for pre and post processing api data
         this.preDeliver = function(data) {
@@ -69,7 +75,7 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
             var plainObject = {};
             for (var property in this) {
                 if (this.hasOwnProperty(property)) {
-                    plainObject[property] = this[property]
+                    plainObject[property] = this[property];
                 }
             }
             return plainObject;
@@ -89,15 +95,15 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                                 if (self._children[property].isInstanceOf) {
                                     arrayItem = self.child(property).restangularize(arrayItem);
                                 } else {
-                                    arrayItem = self.child(property, item).restangularize(arrayItem)
+                                    arrayItem = self.child(property, item).restangularize(arrayItem);
                                 }
                             });
                         } else {
                             if (property !== 'constructor') {
                                 if (self._children[property].isInstanceOf) {
-                                    item[property] = this.child(property).restangularize(item[property])
+                                    item[property] = this.child(property).restangularize(item[property]);
                                 } else {
-                                    item[property] = this.child(property, item).restangularize(item[property])
+                                    item[property] = this.child(property, item).restangularize(item[property]);
                                 }
                             }
                         }
@@ -110,21 +116,19 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
 
         this.child = function(child_resource, parent_instance) {
             child = this._children[child_resource];
-
             if (parent_instance) {
-                return this.child.call(parent_instance, child_resource)
+                return this.child.call(parent_instance, child_resource);
             } else {
-                return this.instantiate_child(child)
+                return this.instantiate_child(child);
             }
         };
 
         this.instantiate_child = function(child) {
             if (!child || (!child.prototypeConstructor && !child.isInstanceOf)) {
-                console.error("You need to include the child service in your controller's dependencies.")
+                console.error("You need to include the child service in your controller's dependencies.");
             }
 
             var ChildToReturn;
-
             if (child.isInstanceOf) {
                 ChildToReturn = child.isInstanceOf;
             } else {
@@ -132,21 +136,21 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                 ChildModelPrototype.prototype = this;
                 ChildModelPrototype.prototype.constructor = ChildModelPrototype;
 
-                ChildModel = function() {}
+                ChildModel = function() {};
                 ChildModel.prototype = new ChildModelPrototype(child.resource);
                 ChildModel.prototype.constructor = ChildModel();
                 ChildToReturn = new ChildModel();
             }
-            return ChildToReturn
+            return ChildToReturn;
         };
 
         this.instantiate_service = function(service, parent) {
             if (!service || (!service.prototypeConstructor && !service.isInstanceOf)) {
-                console.error("You need to include the parent service in your controller's dependencies.")
+                console.error("You need to include the parent service in your controller's dependencies.");
             }
 
             if (!parent) {
-                console.error("You need to include a parent when calling instantiate service.")
+                console.error("You need to include a parent when calling instantiate service.");
             }
 
             var ServiceToReturn;
@@ -158,13 +162,12 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                 ServiceModelPrototype.prototype = parent;
                 ServiceModelPrototype.prototype.constructor = ServiceModelPrototype;
 
-                ServiceModel = function() {}
+                ServiceModel = function() {};
                 ServiceModel.prototype = new ServiceModelPrototype(service.resource);
                 ServiceModel.prototype.constructor = ServiceModel();
                 ServiceToReturn = new ServiceModel();
             }
-
-            return ServiceToReturn
+            return ServiceToReturn;
         };
 
         // This will return a service object
@@ -195,23 +198,23 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
             if (params.parent) {
                 if (params.namesOnParentObject) {
                     angular.forEach(params.namesOnParentObject, function(name) {
-                        params.parent['_children'][name] = service;
+                        params.parent._children[name] = service;
                     });
 
                     if (params.resource) {
-                        params.parent['_children'][params.resource] = service;
+                        params.parent._children[params.resource] = service;
                     }
                 } else {
-                    params.parent['_children'][params.resource] = service;
+                    params.parent._children[params.resource] = service;
                 }
             }
             parent = params.parent ? params.parent : this;
-            return this.instantiate_service(service, parent)
+            return this.instantiate_service(service, parent);
         };
 
         this.addChild = function(params) {
             params.parent = this;
-            return this.createService(params)
+            return this.createService(params);
         };
 
         // ---------------------------------------------------------------------------
@@ -220,7 +223,7 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
         this.$http_getList = function(params) {
             return $http.get(this.resourceBase(), {
                 params: params
-            })
+            });
         };
 
         this.$http_get = function(id, params) {
@@ -249,7 +252,7 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
         this.getList = function(params) {
             var self = this;
             var objToReturn = this.$http_getList(params).then(function(response) {
-                data = self.responseExtractor(response)
+                data = self.responseExtractor(response);
 
                 // Restangularize all the items
                 angular.forEach(data, function(item) {
@@ -265,7 +268,7 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                     }
                 }
 
-                return objToReturn.$object
+                return objToReturn.$object;
             }, function(response) {
                 return self.errorTransformer(response, 'GET');
             });
@@ -279,14 +282,13 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                         if (this[property].plain) {
                             plainArray[property] = this[property].plain();
                         } else {
-                            plainArray[property] = this[property]
+                            plainArray[property] = this[property];
                         }
                     }
                 }
                 delete plainArray.plain;
                 return plainArray;
             };
-
             return objToReturn;
         };
 
@@ -295,49 +297,67 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
             var self = this;
             item = this.preDeliver(item);
             var objToReturn = this.$http_post(item).then(function(response) {
-                return self._returnHelper(response, objToReturn)
+                return self._returnHelper(response, objToReturn);
             }, function(response) {
-                return self.errorTransformer(response, 'POST')
+                return self.errorTransformer(response, 'POST');
             });
             objToReturn.$object = self.new();
-            return objToReturn
+            return objToReturn;
         };
 
 
         this.put = function(item) {
             var self = this;
             item = this.preDeliver(item);
+
+            if (!this._checkHasOwnId(item)) {
+                console.error('Object must have its own id.');
+                return;
+            }
+
             var objToReturn = this.$http_put(item).then(function(response) {
-                return self._returnHelper(response, objToReturn)
+                return self._returnHelper(response, objToReturn);
             }, function(response) {
-                return self.errorTransformer(response, 'PUT')
+                return self.errorTransformer(response, 'PUT');
             });
             objToReturn.$object = self.new();
-            return objToReturn
+            return objToReturn;
         };
 
 
-        this.getId = function(id) {
+        this.getId = function(id, params) {
             var self = this;
-            var objToReturn = this.$http_get(id).then(function(response) {
-                return self._returnHelper(response, objToReturn)
+            var objToReturn = this.$http_get(id, params).then(function(response) {
+                return self._returnHelper(response, objToReturn);
             }, function(response) {
-                return self.errorTransformer(response, 'GET')
+                return self.errorTransformer(response, 'GET');
             });
             objToReturn.$object = self.new();
-            return objToReturn
+            return objToReturn;
         };
 
+        this.get = function(objectToGet, params) {
+            if (!this._checkHasOwnId(objectToGet)) {
+                console.error('Object must have its own id.');
+                return;
+            }
+
+            return this.getId(objectToGet.id, params);
+
+        };
 
         this.refresh = function() {
-            var self = this;
-            if (self.id) {
-                return self.getId(self.id).then(function(response) {
-                    return self._assign(self, response);
-                }, function(response) {
-                    return self.errorTransformer(response, 'GET')
-                });
+            if (this._checkHasOwnId(self)) {
+                console.error('Object must have its own id.');
+                return;
             }
+
+            var self = this;
+            return self.getId(self.id).then(function(response) {
+                return self._assign(self, response);
+            }, function(response) {
+                return self.errorTransformer(response, 'GET');
+            });
         };
 
         // This can either save itself, or an object passed
@@ -348,20 +368,19 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
 
             if (item.hasOwnProperty('id') && item.id) {
                 objToReturn = this.$http_put(item).then(function(response) {
-                    return self._returnHelper(response, objToReturn)
+                    return self._returnHelper(response, objToReturn);
                 }, function(response) {
-                    return self.errorTransformer(response, 'PUT')
+                    return self.errorTransformer(response, 'PUT');
                 });
             } else {
                 objToReturn = this.$http_post(item).then(function(response) {
-                    return self._returnHelper(response, objToReturn)
+                    return self._returnHelper(response, objToReturn);
                 }, function(response) {
-                    return self.errorTransformer(response, 'POST')
+                    return self.errorTransformer(response, 'POST');
                 });
             }
-
             objToReturn.$object = objToSave ? objToSave : this;
-            return objToReturn
+            return objToReturn;
         };
 
         // Accepts an ID, a object with an id, or nothing.
@@ -380,9 +399,9 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
             }
 
             objToReturn = this.$http_delete(idToDelete).then(function(response) {
-                return self._returnHelper(response, objToReturn)
+                return self._returnHelper(response, objToReturn);
             }, function(response) {
-                return self.errorTransformer(response, 'DELETE')
+                return self.errorTransformer(response, 'DELETE');
             });
 
             // Figure out what to assign to $object
@@ -394,8 +413,7 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
                     idToDelete = this.new();
                 }
             }
-
-            return objToReturn
+            return objToReturn;
         };
 
 
@@ -403,7 +421,7 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
             if (!item) {
                 item = {};
             }
-            return this.restangularize(item)
+            return this.restangularize(item);
         };
     };
 
@@ -411,7 +429,7 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
     BaseModel = function() {
         this._children = {};
     };
-    BaseModel.prototype = new BaseModelPrototype()
+    BaseModel.prototype = new BaseModelPrototype();
     BaseModel.prototype.constructor = BaseModel();
     return new BaseModel();
 });

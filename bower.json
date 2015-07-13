@@ -1,11 +1,11 @@
 {
-  "name": "ap-fly",
+  "name": "apfly",
   "version": "1.00",
   "authors": [
     "Zohar Jackson <zohar.jackson+github@gmail.com>"
   ],
-  "main": "./dist/ap-fly.js",
-  "description": "AP-Fly is an AngularJS service that greatly simplifies handling RESTful resources. AP-Fly give you wings.",
+  "main": "./dist/apfly.js",
+  "description": "Apfly is an AngularJS service that greatly simplifies handling RESTful resources. Apfly give you wings.",
   "keywords": [
     "AngularJS",
     "REST",
@@ -36,5 +36,5 @@
     "angular-mocks": "1.4.2",
     "lodash": "~3.10.0"
   },
-  "homepage": "https://github.com/jakobovski/ap-fly"
+  "homepage": "https://github.com/jakobovski/apfly"
 }

@@ -1,28 +1,27 @@
 ## TEMPORARY STAGING AREA FOR THIS REPO THIS REPO WILL BE DELETED AND REPLACED WITH CLEAN HISTORY WHEN READY.
 
 
-# AP-Fly
+# Apfly
 *(pronounced: API with 'fly' at the end)*
 
-AP-Fly is an AngularJS service that greatly simplifies handling RESTful resources. It provides a customizable scaffolding for defining, accessing and modifying RESTful resources. As they say at the energy drink company: AP-Fly gives you wings.
+Apfly is an AngularJS service that greatly simplifies handling RESTful resources. It provides a customizable scaffolding for defining, accessing and modifying RESTful resources. As they say at the energy drink company: Apfly gives you wings.
 
 
 ## Documentation
-[Read the docs](http://ap-fly.readthedocs.org/en/latest/) for detailed information on using AP-fly.
+[Read the docs](http://apfly.readthedocs.org/en/latest/) for detailed information on using Apfly.
 
 ## Quick Overview
-**Use promises or magic**
+**Use promises or magic on any async function**
 ```javascript
-
-// Use Magic
-$scope.users = UserService.getList().$object;
-
-// Or use Promises
+// Use Promises
 UserService.getList().then(function(users){
     $scope.users = users;
 }, function(response){
-    alert("Oops error from server");
+    alert("Oops error from server!");
 });
+
+// Or use Magic
+$scope.users = UserService.getList().$object;
 ```
 
 
@@ -44,20 +43,23 @@ $scope.newUser = UserService.post(newUser).$object;
 // Delete a user
 UserService.delete(5);
 // or
-UserService.delete(newUser);
+$scope.newUser = UserService.delete(newUser).$object;
 // or
+// Updates the newUser object with values returned from server
 newUser.delete();
 
 // Update a user
 newUser.age = 23;
+// Saves the newUser and updates itself with the response from the server.
 newUser.save();
 // or
-UserService.put(newUser);
+// use put, and update the object manually
+$scope.newUser = UserService.put($scope.newUser).$object;
 
 // Reloads the object from the API
 newUser.refresh();
 
-// Strips all AP-fly methods and properties and returns plain JSON object.
+// Strips all Apfly methods and properties and returns plain Javascript object.
 newUser.plain();
 ```
 
@@ -72,7 +74,7 @@ $scope.user = UserService.getId(5).$object;
 $scope.user.child('addresses').getList();
 
 
-// Edit the zipcode of the address.
+// Edit the zip code of the address.
 $scope.user.addresses[0].zipcode = 10001;
 
 // Now save the changes (PUT /api/users/5/addresses/1)
@@ -100,19 +102,19 @@ $scope.newAddress.user.save();
 
 
 ## Installation
-1. Using bower:  `bower install ap-fly`
-2. Include `ap-fly.min.js` into your application's HTML.
+1. Using bower:  `bower install apfly`
+2. Include `apfly.min.js` into your application's HTML.
 3. Add `apfly` as a dependency in your Angular application.
 
 
-## Differences between AP-Fly and Restangular
-*AP-Fly was inspired by the awesome [Restangular](https://github.com/mgonto/restangular). AP-Fly has some significant differences which are intended to make working with a RESTful API even easier.*
+## Differences between Apfly and Restangular
+*Apfly was inspired by the awesome [Restangular](https://github.com/mgonto/restangular). Apfly has some significant differences which are intended to make working with a RESTful API even easier.*
 
 * You must define all your resources before using them, [this provides many benefits]().
-* Child and related resource are auto-magically instantiated as AP-Fly objects allowing you to use all the AP-Fly methods on them.
+* Child and related resource are auto-magically instantiated as Apfly objects allowing you to use all the Apfly methods on them.
 * Simpler and cleaner methods.
-* AP-fly is intended to allow simpler customization on a per resource basis. Its easy to define custom methods, transformers and resource relationships on a per resource basis.
-* AP-fly methods and properties are placed on the `prototype` of the resource, leaving your resource clean and easier to integrate with 3rd party tools.
+* Apfly is intended to allow simpler customization on a per resource basis. Its easy to define custom methods, transformers and resource relationships on a per resource basis.
+* Apfly methods and properties are placed on the `prototype` of the resource, leaving your resource clean and easier to integrate with 3rd party tools.
 
 
 

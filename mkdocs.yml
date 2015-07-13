@@ -1,4 +1,4 @@
-site_name: AP-Fly
+site_name: APFly
 pages:
 - [index.md, Home]
 - [getting_started.md, Getting Started]
@@ -9,4 +9,4 @@ pages:
 
 
 theme: readthedocs
-repo_url: https://github.com/jakobovski/ap-fly/
+repo_url: https://github.com/jakobovski/apfly/

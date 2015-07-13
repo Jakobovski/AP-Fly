@@ -1,18 +1,17 @@
 # 2.0. API Reference
+---------------------------------------
 
 ## 2.1. CRUD Methods
-
-### GET(id, parameters)
+---------------------------------------
+### getId(id, parameters)
 Performs a HTTP GET operation to the URL associated with the given service. 
-> `id:`  *Integer or String (optional)*.
->> If an `id` is passed to the function then it will perform a get to `/api/users/:id` if no id is passed a GET is performed to `/api/users`.
+> `id`  *Integer or String (required)*. If an `id` is passed to the function then it will perform a get to `/api/users/:id`.
 
->`parameters` *key, value object (optional)*
->> Parameters should be an object with key values that will be used as query parameters.
+>`parameters` *key, value object (optional)*. Parameters should be an object with key values that will be used as query parameters.
 
-> `returns` A promise that resolves into an instantiated ap-fly object or array.
+> `returns` A promise that resolves into an instantiated apfly object.
 
->**Examples:**
+**Examples:**
 ```javascript
 // GET all users
 $scope.allUsers = UserService.getList().$object;
@@ -36,35 +35,62 @@ UserService.getId(33).then(function(user){
 });
 ```
 
+---------------------------------------
+### get(resource, parameters)
+Same as `getId()` except that it performs a GET to `resource.id`. Will throw an error if `resource` does not have its own `id` property.
 
-### POST(resource)
+---------------------------------------
+### getList(paramaters)
+Same as `getId()` except that it performs a GET to the resource route without an `id` and returns an array. 
+
+**Examples:**
+```javascript
+// GET all users
+// GET /api/users
+$scope.allUsers = UserService.getList().$object;
+
+// Use promises
+// GET /api/users?name=john
+UserService.getList({name:'john'}).then(function(user){
+    $scope.oneUser = user;
+}, function(error){
+    alert('Something went wrong');
+});
+```
+
+---------------------------------------
+### post(resource)
 Performs an HTTP POST to the URL associated with the given service. 
->`resource` (required). Can be an ap-fly object or plain json. If plain json the object will be instantiated as an ap-fly object. No need to return the object as the object itself is updated.
+>`resource` (required). Can be an AP-Fly object or plain Javascript object. The returned object will be instantiated as an apfly object. The response needs to be returned as the object passed is not updated. Use `save(resource)` to automatically update the passed object.
 
-> `returns` A promise that resolves into an instantiated ap-fly object.
+> `returns` A promise that resolves into an instantiated apfly object.
 
->**Examples:**
+**Examples:**
 ```javascript
 // Create a new user
 $scope.newUser = {name:"John Doe", age:54};
 UserService.post($scope.newUser);
 
 // Use promises
-UserService.post($scope.newUser).then(function(user){
-    // Do something
-}, function(error){
-    alert('Something went wrong');
+UserService.post($scope.newUser).then(function(response){
+    $scope.newUser = response;
+}, function(response){
+    alert('Error: Something went wrong');
 });
+
+// Use magic
+
+$scope.newUser = UserService.post($scope.newUser).$object;
 ```
 
-
-### PUT(resource)
+---------------------------------------
+### put(resource)
 Performs an HTTP PUT to the URL associated with the given service. 
->`resource` (required). Can be an ap-fly object or plain json. The object must have an id. If plain json the object will be instantiated as an ap-fly object. No need to return the object as the object itself is updated.
+>`resource` (required). Can be an apfly object or a plain Javascript object. The object must have an id. The returned object will be instantiated as an apfly object. The response needs to be returned as the object passed is not updated. Use `save(resource)` to automatically update the passed object.
 
-> `returns` A promise that resolves into an instantiated ap-fly object.
+> `returns` A promise that resolves into an instantiated apfly object.
 
->**Examples:**
+**Examples:**
 ```javascript
 // Create a new user
 $scope.existingUser = {id: 23, name:"John Doe", age:54};
@@ -79,19 +105,14 @@ UserService.put($scope.existingUser).then(function(user){
 ```
 
 
-
-### DELETE(id, resource)
+---------------------------------------
+### delete(resourceOrId)
 Performs an HTTP DELETE to the URL associated with the given service. 
-> `id:`  *Integer or String (optional)*.
->> If an `id` is passed to the function then it will perform a DELETE to `/api/users/:id`
+> `resourceOrId:`   *Integer, String or Object (optional)*. If `resourceOrId` is an Integer or String then a `DELETE` will be performed to `/api/users/:resourceOrId`. If `resourceOrId` is an object then a `DELETE` will be performed to `/api/users/:resourceOrId.id`. If nothing is passed then a `DELETE` will be performed to the `id` of the object that the method is being called on.
 
->`resource:` *object (optional)* 
->> Object must have an id property. If an object is passed with an id property than a delete will be performed to `api/users/:resource.id`
-> `returns` A promise.
+> `returns` A promise that resolves into an instantiated apfly object.
 
-> If no arguments are passed than a DELETE will be performed to self. if the object has an ID then it will be performed to that id, or to the resource url.
-
->**Examples:**
+**Examples:**
 ```javascript
 // Performs DELETE to /api/users/33
 UserService.delete(33);
@@ -113,17 +134,16 @@ UserService.delete(33).then(function(response){
 ```
 
 
+---------------------------------------
+### save(resource)
+Performs an HTTP POST or PUT to the URL associated with the given service. 
+>`resource` (required). Can be an apfly object or a plain Javascript object. If the object has an `id` then a `PUT` will be performed, else `POST`. The returned object will be instantiated as an apfly object. 
 
-### SAVE(resource)
-Performs an HTTP DELETE to the URL associated with the given service. 
->`resource:` *object (optional)* 
->> If an object is passed with an id property than a PUT will be performed to `api/users/:resource.id` otherwise a POST will be performed to `/api/users`
+> `returns` A promise that resolves into an instantiated apfly object.
 
-> `returns` A promise that resolves into an instantiated ap-fly object.
+*WARNING:* The object passed (or the object the method is being called on) is automatically updated from the API's response. There is no need to assign the returned value.
 
-> If no arguments are passed than a PUT or POST will be performed to self. if the object has an id then it will be performed to that id, or to the resource url.
-
->**Examples:**
+**Examples:**
 ```javascript
 // Performs POST to /api/users
 UserService.save({name:'john'});
@@ -145,14 +165,12 @@ $scope.oneUser.save(33).then(function(response){
 ```
 
 
-
+---------------------------------------
 ### refresh()
-Performs an HTTP get to the URL associated with the given service. Overwrites current object with data from the API.
-> `returns` A promise that resolves into an instantiated ap-fly object. 
+Performs an HTTP get to the URL associated with the given service. Overwrites all the properties on the object.
+> `returns` A promise that resolves into an instantiated apfly object. 
 
-> If no arguments are passed than a PUT or POST will be performed to self. if the object has an id then it will be performed to that id, or to the resource url.
-
->**Examples:**
+**Examples:**
 ```javascript
 $scope.oneUser = UserService.getId(33).$object; 
 // Refresh a user with the latest data from the server. This will overwrite any properties on the user object.
@@ -165,18 +183,21 @@ $scope.oneUser.refresh().then(function(response){
     alert('Something went wrong');
 });
 ```
-
+---------------------------------------
 ## 2.2. Utility Methods
+---------------------------------------
 
 ### plain()
-Returns a plain JSON object that is a copy of the resource striped of ap-fly methods. 
+Returns a plain Javascript object that is stripped of all apfly methods and properties.
 
+---------------------------------------
 ### new(object)
 Creates a new apfly object of the given resource type or instantiates the passed object as a apfly resource of the given type.
 >`object:` *object (optional)* 
 >> If a resource is passed it will instantiate that resource as an apfly object, otherwise returns a new apfly object of the given service
+>> **Note:** This method does not make an calls to the API.
 
->**Examples:**
+**Examples:**
 ```javascript
 var newUser = UserService.new();
 newUser.name = "John Doe";
@@ -189,18 +210,83 @@ var newUser = {name:"John Doe", age:54};
 UserService.new(newUser);
 newUser.save(); 
 ```
+---------------------------------------
 
 
 ## 2.2. Global Configuration Methods
-### ApflyProvider.setBaseUrl(string)
-### ApflyProvider.setResponseExtractor(function(response, httpMethod)){})
-### ApflyProvider.setErrorTransformer(function(response, httpMethod){})
+---------------------------------------
+### Apfly.setBaseUrl(string)
+Accepts a string to use as the base URL of all requests.
+
+**Examples:**
+```javascript
+// Configuring your API URL.
+// So that all request start with '/api'
+angular.module('my-app').run(function(Apfly) {
+    Apfly.setBaseUrl("/api")
+)};
+```
+---------------------------------------
+### Apfly.setResponseExtractor(function(response, httpMethod)){})
+This is an optional configuration option. This allows you to transform every response from the API. This is often used for dealing with pagination.
+>`method` will be either 'POST', 'PUT', 'DELETE' or 'GET'
+
+**Examples:**
+```javascript
+/*
+    In this example every response from the server has a data, metadata and a message property. 
+    Like this:  {data:{}, metadata:{color:'blue'}, message: 'Success'}
+    This function will place the metadata and message values onto the data. 
+    This will work for arrays and individual resources.
+*/
+Apfly.setResponseExtractor(function(response, method) {
+    if (response.data){
+        var data = response.data.data;
+        data._metadata = response.data.metadata;
+        data._message = response.data.message;
+        return data;
+    }
+});
 
 
-## 2.3 Resource level configuration methods
-### setPostDeliver
-### setPreDeliver
+$scope.user = UserService.getId(33).$object;
+
+console.log($scope.user._metadata);
+// {color: 'blue'}
+console.log($scope.user.message);
+// Success
+```
+---------------------------------------
+### Apfly.setErrorTransformer(function(response, httpMethod){})
+This is an optional configuration option. This allows you to transform every response from the API that fails in an error in a specified way.
+>`method` will be either 'POST', 'PUT', 'DELETE' or 'GET'
+
+**Examples:**
+```javascript
+Apfly.setErrorTransformer(function(response, method) {
+    if (response.data){
+        var data = response.data.data;
+        data._error = "Error:" + response.data.messages;
+        return data;
+    }
+});
+```
+
+---------------------------------------
+## 2.3 Resource Level Configuration Methods
+---------------------------------------
+### setPostDeliver(function(object))
+
+
+---------------------------------------
+### setPreDeliver(function(object))
+
+
+---------------------------------------
 ### addChild()
+
+
+---------------------------------------
 
 
 
