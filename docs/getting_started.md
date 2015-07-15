@@ -117,7 +117,7 @@ oldUser.delete();
 ```
 
 
-### 1.2.4. Some utility methods
+### 1.2.4. Utility Methods
 ```javascript
 // Strips all AP-Fly methods and properties and returns a plain JS object.
 newUser.plain();
