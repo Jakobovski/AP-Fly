@@ -427,6 +427,6 @@ angular.module('apfly').factory('APFly', function($http, $q, AppConfig) {
            this._children = {};
        };
        BaseModel.prototype = new BaseModelPrototype();
-       BaseModel.prototype.constructor = BaseModel();
+       BaseModel.prototype.constructor = newBaseModel();
        return new BaseModel();
    });

@@ -1,5 +1,5 @@
 TODO
-
+- do we need new ChildModel() or just ChildModel()
 - addChild
 - child
 - createService
